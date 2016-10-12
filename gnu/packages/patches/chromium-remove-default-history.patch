@@ -1,0 +1,13 @@
+Don't pre-populate the New Tab Page for new profiles.
+
+--- a/chrome/browser/history/top_sites_factory.cc
++++ b/chrome/browser/history/top_sites_factory.cc
+@@ -74,7 +74,7 @@
+ 
+ void InitializePrepopulatedPageList(
+     history::PrepopulatedPageList* prepopulated_pages) {
+-#if !defined(OS_ANDROID)
++#if 0
+   DCHECK(prepopulated_pages);
+   prepopulated_pages->reserve(arraysize(kRawPrepopulatedPages));
+   for (size_t i = 0; i < arraysize(kRawPrepopulatedPages); ++i) {

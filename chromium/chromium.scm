@@ -109,10 +109,6 @@
     (sha256 (base32 hash))
     (file-name (chromium-patch-file-name pathspec))))
 
-;; XXX: It would be great to have (upstream-patch ...), but the API
-;; at <https://chromium.googlesource.com/chromium/> can only return
-;; base64-encoded patches.
-
 (define %debian-revision "debian/68.0.3440.75-2")
 (define %gentoo-revision "a79be956bb7bbeaca245564ecb4a350b1203ca98")
 (define %inox-revision "8afa26a5ffb2e8ff52ac5b7bbdccc9f09290120e")
@@ -169,6 +165,9 @@
    ;; Add DuckDuckGo and use it as the default search engine.
    (inox-patch "0011-add-duckduckgo-search-engine.patch" %inox-revision
                "0mvw1ax0gw3d252c9b1pwbk0j7ny8z9nsfywcmhj56wm6yksgpkg")
+   ;; Don't fetch translation packs when opening settings for the first time.
+   (inox-patch "0014-disable-translation-lang-fetch.patch" %inox-revision
+               "0lbmcjfxx2rz3daqbhd3cizpynjk2klmsjh1qd7ryhnkfs7ngywx")
    ;; Don't start a "Login Wizard" at first launch.
    (inox-patch "0018-disable-first-run-behaviour.patch" %inox-revision
                "1y4zsqqf2125jkb1phwy9g5hcbd9xhyv5lr4xcaly66rpdzx2ayb")))
@@ -177,7 +176,10 @@
   (list
    ;; Disable browser sign-in to prevent leaking data at launch.
    (ungoogled-patch "disable-signin.patch" %ungoogled-revision
-                    "0a6akb10bzk6z6nhqa211y8rbj0ibdhhg5n92482q9sikavd8hz0")))
+                    "0a6akb10bzk6z6nhqa211y8rbj0ibdhhg5n92482q9sikavd8hz0")
+   ;; Don't report back to servers with information about errors.
+   (ungoogled-patch "disable-domain-reliability.patch" %ungoogled-revision
+                    "1wsvxbbgyb8gsi7c7kxwk8s4kwkrp3rm66kjhbyylkis1p4pgmvc")))
 
 (define opus+custom
   (package (inherit opus)
@@ -748,9 +750,11 @@
        ("ninja" ,ninja)
        ("node" ,node)
        ("pkg-config" ,pkg-config)
-       ("master-preferences" ,(local-file "chromium-master-preferences.json"))
        ("which" ,which)
        ("yasm" ,yasm)
+
+       ;; This file contains defaults for new user profiles.
+       ("master-preferences" ,(local-file "chromium-master-preferences.json"))
 
        ("python-beautifulsoup4" ,python2-beautifulsoup4)
        ("python-html5lib" ,python2-html5lib)

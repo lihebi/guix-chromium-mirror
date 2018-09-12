@@ -28,6 +28,7 @@
   #:use-module (gnu packages assembly)
   #:use-module (gnu packages base)
   #:use-module (gnu packages bison)
+  #:use-module (gnu packages build-tools)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages cups)
   #:use-module (gnu packages curl)
@@ -116,7 +117,7 @@
 
 (define %debian-patches
   (list
-   ;; Bootstrap "GN" using system NSPR.
+   ;; Avoid dependency on NSPR when bootstrapping the build tools.
    (debian-patch "system/nspr.patch" %debian-revision
                  "0xywgsq14xdpfdf0wb5plv5jy2738zbwj7caj2i5g9s5zpdclhsv")
    ;; Ditto for system libevent.
@@ -128,9 +129,6 @@
    ;; Make "Courgette" use system zlib instead of the bundled lzma.
    (debian-patch "system/zlib.patch" %debian-revision
                  "1fmkiw7xrhwadvjxkzpv8j5iih2ws59l3llsdrpapw1vybfyq9nr")
-   ;; Avoid dependency on Chromiums embedded libc++ when bootstrapping.
-   (debian-patch "gn/libcxx.patch" %debian-revision
-                 "02w94h9jd29jyvq09yxl9g31hk8j07qzr7rg23rhibhkn1rvg38x")
    ;; Avoid dependency on Android tools.
    (debian-patch "disable/android.patch" %debian-revision
                  "06kxx1fx9yi52h2fka71i9qqp6jh4r3w890k77nihv8arnabc0nq")
@@ -702,21 +700,17 @@
                       "third_party/node/linux/node-linux-x64/bin")
 
              #t))
-         (add-after 'prepare-build-environment 'bootstrap-gn
-           (lambda _
-             (invoke "python" "tools/gn/bootstrap/bootstrap.py" "-s" "-v")))
          (replace 'configure
            (lambda* (#:key configure-flags #:allow-other-keys)
              (let ((args (string-join configure-flags " ")))
-               (with-directory-excursion "out/Release"
-                 ;; Generate ninja build files.
-                 (invoke "./gn" "gen" "."
-                         (string-append "--args=" args))
+               ;; Generate ninja build files.
+               (invoke "gn" "gen" "out/Release"
+                       (string-append "--args=" args))
 
-                 ;; Print the full list of supported arguments as well as
-                 ;; their current status for convenience.
-                 (format #t "Dumping configure flags...\n")
-                 (invoke "./gn" "args" "." "--list")))))
+               ;; Print the full list of supported arguments as well as
+               ;; their current status for convenience.
+               (format #t "Dumping configure flags...\n")
+               (invoke "gn" "args" "out/Release" "--list"))))
          (replace 'build
            (lambda* (#:key outputs #:allow-other-keys)
              (invoke "ninja" "-C" "out/Release"
@@ -803,6 +797,7 @@
     (native-inputs
      `(("bison" ,bison)
        ("gcc" ,gcc-8)                        ;a recent compiler is required
+       ("gn" ,gn)
        ("gperf" ,gperf)
        ("ninja" ,ninja)
        ("node" ,node)

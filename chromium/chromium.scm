@@ -59,6 +59,7 @@
   #:use-module (gnu packages speech)
   #:use-module (gnu packages tls)
   #:use-module (gnu packages valgrind)
+  #:use-module (gnu packages vulkan)
   #:use-module (gnu packages video)
   #:use-module (gnu packages xiph)
   #:use-module (gnu packages xml)
@@ -92,11 +93,13 @@
     (file-name (chromium-patch-file-name pathspec))))
 
 ;; https://github.com/gcarq/inox-patchset
+;; Note: These are now maintained within the ungoogled repository.
 (define (inox-patch pathspec revision hash)
   (origin
     (method url-fetch)
-    (uri (string-append "https://raw.githubusercontent.com/gcarq/inox-patchset/"
-                        revision "/" pathspec))
+    (uri (string-append "https://raw.githubusercontent.com/Eloston"
+                        "/ungoogled-chromium/" revision "/patches"
+                        "/inox-patchset/" pathspec))
     (sha256 (base32 hash))
     (file-name (chromium-patch-file-name pathspec))))
 
@@ -105,61 +108,51 @@
   (origin
     (method url-fetch)
     (uri (string-append "https://raw.githubusercontent.com/Eloston"
-                        "/ungoogled-chromium/" revision "/resources"
-                        "/patches/ungoogled-chromium/" pathspec))
+                        "/ungoogled-chromium/" revision "/patches"
+                        "/ungoogled-chromium/" pathspec))
     (sha256 (base32 hash))
     (file-name (chromium-patch-file-name pathspec))))
 
-(define %debian-revision "debian/68.0.3440.75-2")
-(define %gentoo-revision "a79be956bb7bbeaca245564ecb4a350b1203ca98")
-(define %inox-revision "8afa26a5ffb2e8ff52ac5b7bbdccc9f09290120e")
-(define %ungoogled-revision "55d1a2442dcd9efc574f6c4fa99804d5b8658e4e")
+(define %debian-revision "debian/69.0.3497.81-3")
+(define %ungoogled-revision "be7f24287922c5cfc2f7fef8bc6dd765fcee70f7")
+(define %inox-revision %ungoogled-revision)
 
 (define %debian-patches
   (list
    ;; Avoid dependency on NSPR when bootstrapping the build tools.
    (debian-patch "system/nspr.patch" %debian-revision
-                 "0xywgsq14xdpfdf0wb5plv5jy2738zbwj7caj2i5g9s5zpdclhsv")
+                 "1bazr9sg6cpsvc4yvvh03bd3hxknib78qz2sbz8w2bkk0c8x211m")
    ;; Ditto for system libevent.
    (debian-patch "system/event.patch" %debian-revision
-                 "0cq5kz5yi737vb3k8v67hrr38czqm3mj6g3swh765pmfzvx5inj6")
+                 "1m9wzcs49h0n78rn3lbqgdh1wh62bqsfp30kqd8rphx6lmbw2mar")
    ;; Make PDFium use system OpenJPEG.
    (debian-patch "system/openjpeg.patch" %debian-revision
-                 "0fxvbfvmimg0ykzhsk3l0kyvhz1fgbys51ldh950106yj6dszsmx")
+                 "0lhyqjbrinq35yxls98rw4l6m3g9b9n4kbk317v78r49p0ci6dp4")
    ;; Make "Courgette" use system zlib instead of the bundled lzma.
    (debian-patch "system/zlib.patch" %debian-revision
                  "1fmkiw7xrhwadvjxkzpv8j5iih2ws59l3llsdrpapw1vybfyq9nr")
    ;; Avoid dependency on Android tools.
    (debian-patch "disable/android.patch" %debian-revision
-                 "06kxx1fx9yi52h2fka71i9qqp6jh4r3w890k77nihv8arnabc0nq")
+                 "149y2xcr9dv0s03v0jzsl0z4yq80qml4nyra1y1ah8h7mcg0w65p")
    ;; Do not show a warning about missing API keys.
    (debian-patch "disable/google-api-warning.patch" %debian-revision
-                 "0vqi3n8i1vkp2cxmza7c60fl6d03195sax0ahrk1ksa04xjbkkqv")
+                 "1bp9g1jvad66pwnf2mm2439r09w3zm57kjji5qxjjy62pyncxxlj")
    ;; Don't override the home page set in master_preferences.
    (debian-patch "disable/welcome-page.patch" %debian-revision
-                 "15c6a296mkqnjdqqq90kmapn56rykb7saz4bs16han6by8q07lbx")))
-
-(define %gentoo-patches
-  (list
-   ;; Fix error detecting system ffmpeg.
-   (gentoo-patch "chromium-ffmpeg-r1.patch" %gentoo-revision
-                 "1pivcdmana4qx8sngcdpr858l0qh6bygv7azj66vg021phq5725a")
-   ;; Add missing <string> #include.
-   (gentoo-patch "chromium-cors-string-r0.patch" %gentoo-revision
-                 "075lgl6g8rih21adsr3hf2mm0qm16s4w2h4h1qjh652sl941w57l")))
+                 "0zgm7h52dpb5zxh0w0lkxwcqarxzk5l7k3a0wsxaj8yb7pm203ks")))
 
 (define %inox-patches
   (list
    ;; Fix build without the "safe browsing" feature.
    (inox-patch "0001-fix-building-without-safebrowsing.patch" %inox-revision
-               "0qchqc3i772drx0c8n44yhkx45fgdvd0h325w0qvaqrakzixbmr4")
+               "03w3lrgmpmc81lacqky8ks0j85qm6xllykjww9rkazgb107lb7g5")
    ;; Use sane defaults.  In particular, don't depend on any Google services.
    (inox-patch "0006-modify-default-prefs.patch" %inox-revision
-               "0sbvs6l80h8ar8na6065ihqnmcsr1b4zc21jcs2wzkrjlxsgspw6")
+               "1paa35irxikpzdp7j84sq2y64kvvsdf75w6x01fj9zhad1zrnl10")
    ;; Recent versions of Chromium may load a remote search engine on the "New
    ;; Tab Page", which causes unnecessary and involuntary network traffic.
    (inox-patch "0008-restore-classic-ntp.patch" %inox-revision
-               "16z5accrri90s922n1r6nj8rqss3g7f579dwwzkk2hdxbkc9wzyr")
+               "0w2nr57wsl989zi8v96yknnqyxkcrz12k99ah78ccibgs0n8pcc1")
    ;; Add DuckDuckGo and use it as the default search engine.
    (inox-patch "0011-add-duckduckgo-search-engine.patch" %inox-revision
                "0mvw1ax0gw3d252c9b1pwbk0j7ny8z9nsfywcmhj56wm6yksgpkg")
@@ -168,13 +161,13 @@
                "0lbmcjfxx2rz3daqbhd3cizpynjk2klmsjh1qd7ryhnkfs7ngywx")
    ;; Don't start a "Login Wizard" at first launch.
    (inox-patch "0018-disable-first-run-behaviour.patch" %inox-revision
-               "1y4zsqqf2125jkb1phwy9g5hcbd9xhyv5lr4xcaly66rpdzx2ayb")))
+               "01r55hyrkdnrc95djx0qs208n7b4bxvkb0vcp6wp9rm0zzzw1ny9")))
 
 (define %ungoogled-patches
   (list
    ;; Disable browser sign-in to prevent leaking data at launch.
    (ungoogled-patch "disable-signin.patch" %ungoogled-revision
-                    "0a6akb10bzk6z6nhqa211y8rbj0ibdhhg5n92482q9sikavd8hz0")
+                    "0d52iqxsva7y0bqc5lw2m9v855c16ax43va9flq3cwxz4k207wzs")
    ;; Don't report back to servers with information about errors.
    (ungoogled-patch "disable-domain-reliability.patch" %ungoogled-revision
                     "1wsvxbbgyb8gsi7c7kxwk8s4kwkrp3rm66kjhbyylkis1p4pgmvc")))
@@ -194,9 +187,8 @@
 (define libvpx/chromium
   ;; Chromium 66 and later requires an unreleased libvpx, so we take the
   ;; commit from "third_party/libvpx/README.chromium" in the tarball.
-  ;; XXX: Might as well reuse Chromium source.
   (let ((version (package-version libvpx))
-        (commit "e27a331778c4c99ec37262ea786a3b4cc2a491ac")
+        (commit "b0dfe4e5c1dd485a61546ad238b14de7775eb24f")
         (revision "0"))
     (package
       (inherit libvpx)
@@ -210,7 +202,7 @@
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "03a0443dnfn6l2v19qpw7p7k29v98c5b5hl4br93czgq0wi29m1g")))))))
+                  "12g2r8irb1a2pc7xsacrk0fsxdjyxabgcq32dg4psfz61bnmm91a")))))))
 
 (define-public gn
   (let ((commit "77d64a3da6bc7d8b0aab83ff7459b3280e6a84f2")
@@ -272,7 +264,7 @@
 (define-public chromium
   (package
     (name "chromium")
-    (version "68.0.3440.106")
+    (version "69.0.3497.92")
     (synopsis "Graphical web browser")
     (source (origin
               (method url-fetch)
@@ -281,14 +273,13 @@
                                   version ".tar.xz"))
               (sha256
                (base32
-                "1676y2axl5ihvv8jid2i9wp4i4awxzij5nwvd5zx98506l3088bh"))
+                "06d0nng713bwwsy05amg21rhahzsrhm9jp4cg1d04fwm945s5p9v"))
               (patches (append %debian-patches
-                               %gentoo-patches
                                %inox-patches
                                %ungoogled-patches
                                (search-patches
-                                "chromium/patches/chromium-gcc-unique-ptr.patch"
-                                "chromium/patches/chromium-remove-default-history.patch")))
+                                "chromium/patches/chromium-remove-default-history.patch"
+                                "chromium/patches/chromium-icu-compat.patch")))
               (modules '((srfi srfi-1)
                          (srfi srfi-26)
                          (ice-9 ftw)
@@ -318,6 +309,7 @@
                            "net/third_party/nss"
                            "net/third_party/spdy"
                            "net/third_party/quic"
+                           "third_party/abseil-cpp"
                            "third_party/adobe/flash/flapper_version.h"
                            ;; FIXME: This is used in:
                            ;; * ui/webui/resources/js/analytics.js
@@ -332,6 +324,9 @@
                            "third_party/angle/third_party/glslang"
                            "third_party/angle/third_party/spirv-headers"
                            "third_party/angle/third_party/spirv-tools"
+                           "third_party/angle/third_party/vulkan-headers"
+                           "third_party/angle/third_party/vulkan-loader"
+                           "third_party/angle/third_party/vulkan-tools"
                            "third_party/angle/third_party/vulkan-validation-layers"
                            "third_party/apple_apsl" ;XXX add APSL2.0 license
                            "third_party/blink"
@@ -367,6 +362,7 @@
                                           "/closure_library/third_party/closure")
                            "third_party/googletest"
                            "third_party/hunspell"
+                           "third_party/iccjpeg"
                            "third_party/iccjpeg"
                            "third_party/inspector_protocol"
                            "third_party/jinja2"
@@ -414,6 +410,7 @@
                            "third_party/skia"
                            "third_party/skia/third_party/skcms"
                            "third_party/skia/third_party/vulkan"
+                           "third_party/skia/third_party/vulkanmemoryallocator"
                            "third_party/skia/third_party/gif"
                            "third_party/smhasher"
                            "third_party/speech-dispatcher"
@@ -668,12 +665,6 @@
                 "/run/current-system/profile/share/chromium/extensions"))
 
              (substitute*
-                 ;; XXX: Probably not needed for M69.
-                 "third_party/blink/renderer/platform/image-encoders/image_encoder.h"
-               (("#include \"third_party/libjpeg/") "#include \"")
-               (("#include \"third_party/libwebp/src/") "#include \""))
-
-             (substitute*
                  "third_party/breakpad/breakpad/src/common/linux/libcurl_wrapper.h"
                (("include \"third_party/curl") "include \"curl"))
              (substitute* "media/base/decode_capabilities.cc"
@@ -796,7 +787,7 @@
                  #t)))))))
     (native-inputs
      `(("bison" ,bison)
-       ("gcc" ,gcc-8)                        ;a recent compiler is required
+       ("gcc" ,gcc-8)
        ("gn" ,gn)
        ("gperf" ,gperf)
        ("ninja" ,ninja)
@@ -867,7 +858,8 @@
        ("snappy" ,snappy)
        ("speech-dispatcher" ,speech-dispatcher)
        ("udev" ,eudev)
-       ("valgrind" ,valgrind)))
+       ("valgrind" ,valgrind)
+       ("vulkan-headers" ,vulkan-headers)))
     (home-page "https://www.chromium.org/")
     (description
      "Chromium is a web browser designed for speed and security.  This

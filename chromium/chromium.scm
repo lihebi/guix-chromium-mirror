@@ -16,7 +16,7 @@
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with GNU Guix.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (gnu packages chromium)
+(define-module (chromium chromium)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
   #:use-module (guix gexp)
@@ -229,8 +229,9 @@
                                %gentoo-patches
                                %inox-patches
                                %ungoogled-patches
-                               (search-patches "chromium-gcc-unique-ptr.patch"
-                                               "chromium-remove-default-history.patch")))
+                               (search-patches
+                                "chromium/patches/chromium-gcc-unique-ptr.patch"
+                                "chromium/patches/chromium-remove-default-history.patch")))
               (modules '((srfi srfi-1)
                          (srfi srfi-26)
                          (ice-9 ftw)

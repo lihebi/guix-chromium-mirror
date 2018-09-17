@@ -363,7 +363,6 @@
                            "third_party/googletest"
                            "third_party/hunspell"
                            "third_party/iccjpeg"
-                           "third_party/iccjpeg"
                            "third_party/inspector_protocol"
                            "third_party/jinja2"
                            "third_party/jstemplate"

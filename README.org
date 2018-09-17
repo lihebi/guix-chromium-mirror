@@ -1,0 +1,23 @@
+#+TITLE: guix-chromium
+#+OPTIONS: toc:nil num:nil
+
+This is a Guix "channel" for the Chromium web browser.
+
+* How to use
+
+Create or modify the =~/.config/guix/channels.scm= file so it looks
+something like this:
+
+:  (cons (channel
+:         (name 'guix-chromium)
+:         (url "https://gitlab.com/mbakke/guix-chromium.git")
+:         (branch "master"))
+:        %default-channels)
+
+Then run ~guix pull~ as usual.  Now you should have a =chromium= package
+available.
+
+* Requirements
+
+  * Guix > 0.15 (for the "channels" feature)
+  * ~16GiB of memory (for building)

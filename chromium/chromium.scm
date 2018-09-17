@@ -113,9 +113,22 @@
     (sha256 (base32 hash))
     (file-name (chromium-patch-file-name pathspec))))
 
+;; https://git.archlinux.org/svntogit/packages.git/tree/trunk?h=packages/chromium
+(define (arch-patch pathspec revision hash)
+  (origin
+    (method url-fetch)
+    (uri (string-append "https://git.archlinux.org/svntogit/packages.git"
+                        "/plain/trunk/" pathspec "?h=packages/chromium"
+                        "&id=" revision))
+    (sha256
+     (base32
+      "1x8sy7m9qw7z9f85af40czj4vwjx2vlc403gh2w04k03v6zd3wn4"))
+    (file-name (chromium-patch-file-name pathspec))))
+
 (define %debian-revision "debian/69.0.3497.81-3")
 (define %ungoogled-revision "be7f24287922c5cfc2f7fef8bc6dd765fcee70f7")
 (define %inox-revision %ungoogled-revision)
+(define %arch-revision "3a387aa30dbbe7bf3b5f00b1d1497d93d1b0c52a")
 
 (define %debian-patches
   (list
@@ -171,6 +184,11 @@
    ;; Don't report back to servers with information about errors.
    (ungoogled-patch "disable-domain-reliability.patch" %ungoogled-revision
                     "1wsvxbbgyb8gsi7c7kxwk8s4kwkrp3rm66kjhbyylkis1p4pgmvc")))
+
+(define %arch-patches
+  (list
+   (arch-patch "chromium-system-icu.patch" %arch-revision
+               "1x8sy7m9qw7z9f85af40czj4vwjx2vlc403gh2w04k03v6zd3wn4")))
 
 (define opus+custom
   (package (inherit opus)
@@ -277,9 +295,9 @@
               (patches (append %debian-patches
                                %inox-patches
                                %ungoogled-patches
+                               %arch-patches
                                (search-patches
-                                "chromium/patches/chromium-remove-default-history.patch"
-                                "chromium/patches/chromium-icu-compat.patch")))
+                                "chromium/patches/chromium-remove-default-history.patch")))
               (modules '((srfi srfi-1)
                          (srfi srfi-26)
                          (ice-9 ftw)

@@ -454,6 +454,7 @@
                            "third_party/usrsctp" ;BSD-2
                            "third_party/WebKit" ;BSD-2 or BSD-3
                            "third_party/web-animations-js" ;ASL2.0
+                           "third_party/webdriver" ;ASL2.0
                            "third_party/webrtc" ;BSD-3
                            "third_party/webrtc/common_audio/third_party/fft4g" ;Custom
                            "third_party/webrtc/common_audio/third_party/spl_sqrt_floor" ;Public domain
@@ -710,6 +711,17 @@
              (substitute* "ui/gfx/skia_util.h"
                (("third_party/vulkan/include/") ""))
 
+             ;; Building chromedriver embeds some files using the ZIP
+             ;; format which doesn't support timestamps before
+             ;; 1980. Therefore, advance the timestamps of the files
+             ;; which are included so that building chromedriver
+             ;; works.
+             (let ((circa-1980 (* 10 366 24 60 60)))
+               (for-each (lambda (file)
+                           (utime file circa-1980 circa-1980))
+                         '("chrome/test/chromedriver/extension/background.js"
+                           "chrome/test/chromedriver/extension/manifest.json")))
+
              #t))
          (add-before 'configure 'prepare-build-environment
            (lambda* (#:key inputs #:allow-other-keys)
@@ -746,7 +758,8 @@
            (lambda* (#:key outputs #:allow-other-keys)
              (invoke "ninja" "-C" "out/Release"
                      "-j" (number->string (parallel-job-count))
-                     "chrome")))
+                     "chrome"
+                     "chromedriver")))
          (replace 'install
            (lambda* (#:key inputs outputs #:allow-other-keys)
              (let* ((out            (assoc-ref outputs "out"))
@@ -816,6 +829,7 @@
                              exec ~a $CHROMIUM_FLAGS \"$@\"~%"
                              sh (string-append lib "/chromium"))))
                  (chmod exe #o755)
+                 (install-file "chromedriver" bin)
 
                  (wrap-program exe
                    ;; TODO: Get these in RUNPATH.

@@ -123,47 +123,59 @@
       "1x8sy7m9qw7z9f85af40czj4vwjx2vlc403gh2w04k03v6zd3wn4"))
     (file-name (chromium-patch-file-name pathspec))))
 
-(define %debian-revision "debian/69.0.3497.81-3")
-(define %ungoogled-revision "be7f24287922c5cfc2f7fef8bc6dd765fcee70f7")
+(define %debian-revision "debian/70.0.3538.67-1")
+(define %ungoogled-revision "be93ead958dea4c7b03446c5935542019f0d2ae1")
 (define %inox-revision %ungoogled-revision)
 (define %arch-revision "3a387aa30dbbe7bf3b5f00b1d1497d93d1b0c52a")
 
 (define %debian-patches
   (list
+   ;; GCC does not support initializer list member assignment.
+   (debian-patch "fixes/member-assignment.patch" %debian-revision
+                 "0dqz2nlvdszpjb9bbz9vqkvzwar1hncdqksgkydvzwlpjvz8g1yx")
+   ;; Help GCC resolve some classes in a jumbo configuration.
+   (debian-patch "fixes/namespace.patch" %debian-revision
+                 "1jf3cbkq1wdh3c8dwz7xlf661j73ma4k3cil71wsjfnqrjj8hr6h")
+   ;; Add constexpr on methods where it is required.
+   (debian-patch "fixes/constexpr.patch" %debian-revision
+                 "0kw88wrcr7g69msdlr5k3jwwfq8pvdvr1p2nyxqpxn2kwhhwb5zf")
    ;; Avoid dependency on NSPR when bootstrapping the build tools.
    (debian-patch "system/nspr.patch" %debian-revision
-                 "1bazr9sg6cpsvc4yvvh03bd3hxknib78qz2sbz8w2bkk0c8x211m")
+                 "0n0hxmxnn033wlzijb9749dc6a4mvkhq5p7gvr4hcwh1in0k3hnn")
    ;; Ditto for system libevent.
    (debian-patch "system/event.patch" %debian-revision
                  "1m9wzcs49h0n78rn3lbqgdh1wh62bqsfp30kqd8rphx6lmbw2mar")
    ;; Make PDFium use system OpenJPEG.
    (debian-patch "system/openjpeg.patch" %debian-revision
-                 "0lhyqjbrinq35yxls98rw4l6m3g9b9n4kbk317v78r49p0ci6dp4")
+                 "185y9zssllfdib7qknnx1vgrj5iqjrqljpib49bazd5ssl3zn767")
    ;; Make "Courgette" use system zlib instead of the bundled lzma.
    (debian-patch "system/zlib.patch" %debian-revision
                  "1fmkiw7xrhwadvjxkzpv8j5iih2ws59l3llsdrpapw1vybfyq9nr")
    ;; Avoid dependency on Android tools.
    (debian-patch "disable/android.patch" %debian-revision
-                 "149y2xcr9dv0s03v0jzsl0z4yq80qml4nyra1y1ah8h7mcg0w65p")
+                 "1drmy7izyl2lg7fjm9xnvnm17i7xn5269q95l433m1g6jmy7w6zh")
    ;; Do not show a warning about missing API keys.
    (debian-patch "disable/google-api-warning.patch" %debian-revision
-                 "1bp9g1jvad66pwnf2mm2439r09w3zm57kjji5qxjjy62pyncxxlj")
+                 "0h311w19y7qnm1vg1jpdb4mqw6dwvl1i2yw9dm6xm0qkl76k5qwg")
    ;; Don't override the home page set in master_preferences.
    (debian-patch "disable/welcome-page.patch" %debian-revision
-                 "0zgm7h52dpb5zxh0w0lkxwcqarxzk5l7k3a0wsxaj8yb7pm203ks")))
+                 "0cj6g9yy02nd2s7wlyp1rdyy7ykg6zdkbzh8ralr7gpgbwzjb999")
+   ;; Fix alignof() usage with GCC8; upstream wants __alignof__.
+   (debian-patch "fixes/alignof.patch" %debian-revision
+                 "0dkddi7l9r1hjylypcndnrvjx296si5apc3n92kcl5l7mc5gfdfb")))
 
 (define %inox-patches
   (list
    ;; Fix build without the "safe browsing" feature.
    (inox-patch "0001-fix-building-without-safebrowsing.patch" %inox-revision
-               "03w3lrgmpmc81lacqky8ks0j85qm6xllykjww9rkazgb107lb7g5")
+               "0avkhb5fpk4zbbk1sjmsylqn7kccdznc5fh90svi3s8phxvy519g")
    ;; Use sane defaults.  In particular, don't depend on any Google services.
    (inox-patch "0006-modify-default-prefs.patch" %inox-revision
-               "1paa35irxikpzdp7j84sq2y64kvvsdf75w6x01fj9zhad1zrnl10")
+               "0vjljwfl0qlcdkvh4k18vaqpx14b6jnlfdkcdbskgn13cps1v6fq")
    ;; Recent versions of Chromium may load a remote search engine on the "New
    ;; Tab Page", which causes unnecessary and involuntary network traffic.
    (inox-patch "0008-restore-classic-ntp.patch" %inox-revision
-               "0w2nr57wsl989zi8v96yknnqyxkcrz12k99ah78ccibgs0n8pcc1")
+               "1paghqp3viaq03618rhppf2xki1k2s1x3lh3h218yy3zvk34wshx")
    ;; Add DuckDuckGo and use it as the default search engine.
    (inox-patch "0011-add-duckduckgo-search-engine.patch" %inox-revision
                "0mvw1ax0gw3d252c9b1pwbk0j7ny8z9nsfywcmhj56wm6yksgpkg")
@@ -172,13 +184,13 @@
                "0lbmcjfxx2rz3daqbhd3cizpynjk2klmsjh1qd7ryhnkfs7ngywx")
    ;; Don't start a "Login Wizard" at first launch.
    (inox-patch "0018-disable-first-run-behaviour.patch" %inox-revision
-               "01r55hyrkdnrc95djx0qs208n7b4bxvkb0vcp6wp9rm0zzzw1ny9")))
+               "1idp1l37l9bzwi8wabj7gi614zi845fpagj9cpddicrvjg169kbq")))
 
 (define %ungoogled-patches
   (list
    ;; Disable browser sign-in to prevent leaking data at launch.
    (ungoogled-patch "disable-signin.patch" %ungoogled-revision
-                    "0d52iqxsva7y0bqc5lw2m9v855c16ax43va9flq3cwxz4k207wzs")
+                    "0y32cqg23mxari0y20d4j3qmn903yxzw5swv9pjh9sjzilg1q5ld")
    ;; Don't report back to servers with information about errors.
    (ungoogled-patch "disable-domain-reliability.patch" %ungoogled-revision
                     "1wsvxbbgyb8gsi7c7kxwk8s4kwkrp3rm66kjhbyylkis1p4pgmvc")))
@@ -204,7 +216,7 @@
   ;; Chromium 66 and later requires an unreleased libvpx, so we take the
   ;; commit from "third_party/libvpx/README.chromium" in the tarball.
   (let ((version (package-version libvpx))
-        (commit "b0dfe4e5c1dd485a61546ad238b14de7775eb24f")
+        (commit "753fd86e86ac727dccac88376260b8f54502f2a3")
         (revision "0"))
     (package
       (inherit libvpx)
@@ -218,7 +230,7 @@
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "12g2r8irb1a2pc7xsacrk0fsxdjyxabgcq32dg4psfz61bnmm91a")))))))
+                  "0i4xbif70gasljsmxnsvw4dxx9hwf94kz3s12ki062n6c0b41mb7")))))))
 
 (define-public gn
   (let ((commit "77d64a3da6bc7d8b0aab83ff7459b3280e6a84f2")
@@ -280,7 +292,7 @@
 (define-public chromium
   (package
     (name "chromium")
-    (version "69.0.3497.100")
+    (version "70.0.3538.67")
     (synopsis "Graphical web browser")
     (source (origin
               (method url-fetch)
@@ -289,7 +301,7 @@
                                   version ".tar.xz"))
               (sha256
                (base32
-                "0dcyzsb70ssx5hd2b25ab3ydpqh7crhxab9zzi5gn99ywxh1afg3"))
+                "0dqfwghl73gcmbnl9wb3i5wz8q65y1vhg7n0m2nh0hv33w1w4mp9"))
               (patches (append %debian-patches
                                %inox-patches
                                %ungoogled-patches
@@ -323,8 +335,9 @@
                            "net/third_party/http2"
                            "net/third_party/mozilla_security_manager"
                            "net/third_party/nss"
-                           "net/third_party/spdy"
                            "net/third_party/quic"
+                           "net/third_party/spdy"
+                           "net/third_party/uri_template" ;ASL2.0
                            "third_party/abseil-cpp"
                            "third_party/adobe/flash/flapper_version.h"
                            ;; FIXME: This is used in:
@@ -387,6 +400,8 @@
                            "third_party/libXNVCtrl"
                            "third_party/libaddressinput"
                            "third_party/libaom"
+                           "third_party/libaom/source/libaom/third_party/vector" ;expat
+                           "third_party/libaom/source/libaom/third_party/x86inc" ;ISC
                            "third_party/libjingle_xmpp"
                            "third_party/libphonenumber"
                            "third_party/libsecret" ;FIXME: needs pkg-config support.
@@ -398,7 +413,7 @@
                            "third_party/libyuv"
                            "third_party/lss"
                            "third_party/markupsafe"
-                           "third_party/mesa"
+                           "third_party/mesa_headers"
                            "third_party/metrics_proto"
                            "third_party/modp_b64"
                            "third_party/node"
@@ -439,6 +454,13 @@
                            "third_party/WebKit"
                            "third_party/web-animations-js"
                            "third_party/webrtc"
+                           "third_party/webrtc/common_audio/third_party/fft4g" ;custom
+                           "third_party/webrtc/common_audio/third_party/spl_sqrt_floor" ;PD
+                           "third_party/webrtc/modules/third_party/fft" ;custom
+                           "third_party/webrtc/modules/third_party/g711" ;public domain
+                           "third_party/webrtc/modules/third_party/g722" ;public domain
+                           "third_party/webrtc/rtc_base/third_party/base64" ;custom
+                           "third_party/webrtc/rtc_base/third_party/sigslot" ;public domain
                            "third_party/webrtc_overrides"
                            "third_party/widevine/cdm/widevine_cdm_version.h"
                            "third_party/widevine/cdm/widevine_cdm_common.h"
@@ -449,7 +471,7 @@
                            "url/third_party/mozilla"
                            "v8/src/third_party/utf8-decoder"
                            "v8/src/third_party/valgrind"
-                           "v8/third_party/antlr4"
+                           "v8/third_party/v8/builtins" ;PSFL
                            "v8/third_party/inspector_protocol"))))
 
                     (define (empty? dir)
@@ -563,7 +585,6 @@
              "enable_nacl=false"
              "enable_nacl_nonsfi=false"
              "use_allocator=\"none\""   ;don't use tcmalloc
-             "override_build_date=\"01 01 2000 05:00:00\""
              "use_unofficial_version_number=false"
 
              ;; Disable "safe browsing", which pulls in a dependency on
@@ -611,7 +632,6 @@
              "use_system_zlib=true"
 
              "use_gnome_keyring=false"  ;deprecated by libsecret
-             "use_gtk3=true"
              "use_openh264=true"
              "use_xkbcommon=true"
              "use_pulseaudio=true"
@@ -682,8 +702,12 @@
              (substitute*
                  "third_party/breakpad/breakpad/src/common/linux/libcurl_wrapper.h"
                (("include \"third_party/curl") "include \"curl"))
+
              (substitute* "media/base/decode_capabilities.cc"
                (("third_party/libvpx/source/libvpx/") ""))
+
+             (substitute* "ui/gfx/skia_util.h"
+               (("third_party/vulkan/include/") ""))
 
              #t))
          (add-before 'configure 'prepare-build-environment

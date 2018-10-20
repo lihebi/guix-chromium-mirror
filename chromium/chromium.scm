@@ -322,157 +322,158 @@
                             ;; Prepend paths with "./" for comparison with ftw.
                             (string-append "./" path))
                           (list
-                           "base/third_party/dmg_fp"
-                           "base/third_party/dynamic_annotations"
-                           "base/third_party/icu"
-                           "base/third_party/superfasthash"
-                           "base/third_party/symbolize"
-                           "base/third_party/xdg_mime"
-                           "base/third_party/xdg_user_dirs"
-                           "chrome/third_party/mozilla_security_manager"
-                           "courgette/third_party/bsdiff"
-                           "courgette/third_party/divsufsort"
-                           "net/third_party/http2"
-                           "net/third_party/mozilla_security_manager"
-                           "net/third_party/nss"
-                           "net/third_party/quic"
-                           "net/third_party/spdy"
+                           "base/third_party/dmg_fp" ;ISC/X11-like
+                           "base/third_party/dynamic_annotations" ;BSD-2
+                           "base/third_party/icu" ;X11-like
+                           "base/third_party/superfasthash" ;BSD-3
+                           "base/third_party/symbolize" ;BSD-3
+                           "base/third_party/xdg_mime" ;ASL-2.0
+                           "base/third_party/xdg_user_dirs" ;Expat
+                           "chrome/third_party/mozilla_security_manager" ;MPL-1.1
+                           "courgette/third_party/bsdiff" ;BSD protection license
+                           "courgette/third_party/divsufsort" ;Expat
+                           "net/third_party/http2" ;BSD-3
+                           "net/third_party/mozilla_security_manager" ;MPL-1.1
+                           "net/third_party/nss" ;MPL-2.0
+                           "net/third_party/quic" ;BSD-3
+                           "net/third_party/spdy" ;BSD-3
                            "net/third_party/uri_template" ;ASL2.0
-                           "third_party/abseil-cpp"
-                           "third_party/adobe/flash/flapper_version.h"
+                           "third_party/abseil-cpp" ;ASL2.0
+                           "third_party/adobe/flash/flapper_version.h" ;no license, trivial
                            ;; FIXME: This is used in:
                            ;; * ui/webui/resources/js/analytics.js
                            ;; * ui/file_manager/
-                           "third_party/analytics"
-                           "third_party/angle"
-                           "third_party/angle/src/common/third_party/base"
-                           "third_party/angle/src/common/third_party/smhasher"
-                           "third_party/angle/src/third_party/compiler"
-                           "third_party/angle/src/third_party/libXNVCtrl"
-                           "third_party/angle/src/third_party/trace_event"
-                           "third_party/angle/third_party/glslang"
-                           "third_party/angle/third_party/spirv-headers"
-                           "third_party/angle/third_party/spirv-tools"
-                           "third_party/angle/third_party/vulkan-headers"
-                           "third_party/angle/third_party/vulkan-loader"
-                           "third_party/angle/third_party/vulkan-tools"
-                           "third_party/angle/third_party/vulkan-validation-layers"
-                           "third_party/apple_apsl" ;XXX add APSL2.0 license
-                           "third_party/blink"
-                           "third_party/boringssl"
-                           "third_party/boringssl/src/third_party/fiat"
-                           "third_party/breakpad"
-                           "third_party/brotli"
-                           "third_party/cacheinvalidation"
-                           "third_party/catapult"
-                           "third_party/catapult/common/py_vulcanize/third_party/rcssmin"
-                           "third_party/catapult/common/py_vulcanize/third_party/rjsmin"
-                           "third_party/catapult/third_party/polymer"
-                           "third_party/catapult/tracing/third_party/d3"
-                           "third_party/catapult/tracing/third_party/gl-matrix"
-                           "third_party/catapult/tracing/third_party/jszip"
-                           "third_party/catapult/tracing/third_party/mannwhitneyu"
-                           "third_party/catapult/tracing/third_party/oboe"
-                           "third_party/catapult/tracing/third_party/pako"
-                           "third_party/ced"
-                           "third_party/cld_3"
-                           "third_party/crashpad"
+                           "third_party/analytics" ;ASL2.0
+                           "third_party/angle" ;BSD-3
+                           "third_party/angle/src/common/third_party/base" ;BSD-3
+                           "third_party/angle/src/common/third_party/smhasher" ;Public domain
+                           "third_party/angle/src/third_party/compiler" ;BSD-2
+                           "third_party/angle/src/third_party/libXNVCtrl" ;Expat
+                           "third_party/angle/src/third_party/trace_event" ;BSD-3
+                           "third_party/angle/third_party/glslang" ;BSD-3
+                           "third_party/angle/third_party/spirv-headers" ;Expat
+                           "third_party/angle/third_party/spirv-tools" ;Expat
+                           "third_party/angle/third_party/vulkan-headers" ;ASL2.0
+                           "third_party/angle/third_party/vulkan-loader" ;ASL2.0
+                           "third_party/angle/third_party/vulkan-tools" ;ASL2.0
+                           "third_party/angle/third_party/vulkan-validation-layers" ;ASL2.0
+                           "third_party/apple_apsl" ;APSL2.0
+                           "third_party/blink" ;BSD-3
+                           "third_party/boringssl" ;OpenSSL/ISC (Google additions are ISC)
+                           "third_party/boringssl/src/third_party/fiat" ;Expat
+                           "third_party/breakpad" ;BSD-3
+                           "third_party/brotli" ;Expat
+                           "third_party/cacheinvalidation" ;ASL2.0
+                           "third_party/catapult" ;BSD-3
+                           "third_party/catapult/common/py_vulcanize/third_party/rcssmin" ;ASL2.0
+                           "third_party/catapult/common/py_vulcanize/third_party/rjsmin" ;ASL2.0
+                           "third_party/catapult/third_party/polymer" ;BSD-3
+                           "third_party/catapult/tracing/third_party/d3" ;BSD-3
+                           "third_party/catapult/tracing/third_party/gl-matrix" ;Expat
+                           "third_party/catapult/tracing/third_party/jszip" ;Expat or GPL3
+                           "third_party/catapult/tracing/third_party/mannwhitneyu" ;Expat
+                           "third_party/catapult/tracing/third_party/oboe" ;BSD-2
+                           "third_party/catapult/tracing/third_party/pako" ;Expat
+                           "third_party/ced" ;BSD-3
+                           "third_party/cld_3" ;ASL2.0
+                           "third_party/crashpad" ;ASL2.0
                            (string-append "third_party/crashpad/crashpad/"
-                                          "third_party/zlib/zlib_crashpad.h")
-                           "third_party/crc32c"
-                           "third_party/cros_system_api"
-                           "third_party/dom_distiller_js"
-                           "third_party/fips181"
-                           "third_party/flatbuffers"
-                           "third_party/glslang-angle"
-                           "third_party/google_input_tools"
-                           "third_party/google_input_tools/third_party/closure_library"
+                                          "third_party/zlib/zlib_crashpad.h") ;Zlib
+                           "third_party/crc32c" ;BSD-3
+                           "third_party/cros_system_api" ;BSD-3
+                           "third_party/dom_distiller_js" ;BSD-3
+                           "third_party/fips181" ;BSD-3
+                           "third_party/flatbuffers" ;ASL2.0
+                           "third_party/google_input_tools" ;ASL2.0
+                           "third_party/google_input_tools/third_party/closure_library" ;ASL2.0
                            (string-append "third_party/google_input_tools/third_party"
-                                          "/closure_library/third_party/closure")
-                           "third_party/googletest"
-                           "third_party/hunspell"
-                           "third_party/iccjpeg"
-                           "third_party/inspector_protocol"
-                           "third_party/jinja2"
-                           "third_party/jstemplate"
-                           "third_party/khronos"
-                           "third_party/leveldatabase"
-                           "third_party/libXNVCtrl"
-                           "third_party/libaddressinput"
-                           "third_party/libaom"
-                           "third_party/libaom/source/libaom/third_party/vector" ;expat
+                                          "/closure_library/third_party/closure") ;Expat
+                           "third_party/googletest" ;BSD-3
+                           "third_party/hunspell" ;MPL1.1
+                           "third_party/iccjpeg" ;IJG
+                           "third_party/inspector_protocol" ;BSD-3
+                           "third_party/jinja2" ;BSD-3
+                           "third_party/jstemplate" ;ASL2.0
+                           "third_party/khronos" ;Expat, SGI
+                           "third_party/leveldatabase" ;BSD-3
+                           "third_party/libXNVCtrl" ;Expat
+                           "third_party/libaddressinput" ;ASL2.0
+                           "third_party/libaom" ;BSD-2
+                           "third_party/libaom/source/libaom/third_party/vector" ;Expat
                            "third_party/libaom/source/libaom/third_party/x86inc" ;ISC
-                           "third_party/libjingle_xmpp"
-                           "third_party/libphonenumber"
-                           "third_party/libsecret" ;FIXME: needs pkg-config support.
-                           "third_party/libsrtp"
-                           "third_party/libsync"   ;TODO: package
-                           "third_party/libudev"
-                           "third_party/libwebm"
-                           "third_party/libxml"
-                           "third_party/libyuv"
-                           "third_party/lss"
-                           "third_party/markupsafe"
-                           "third_party/mesa_headers"
-                           "third_party/metrics_proto"
-                           "third_party/modp_b64"
-                           "third_party/node"
+                           "third_party/libjingle_xmpp" ;BSD-3
+                           "third_party/libphonenumber" ;ASL2.0
+                           ;; FIXME: Needs pkg-config support.
+                           "third_party/libsecret" ;LGPL2.1+
+                           "third_party/libsrtp" ;BSD-3
+                           ;; TODO: Package this and purge.
+                           "third_party/libsync" ;ASL2.0
+                           "third_party/libudev" ;LGPL2.1+
+                           "third_party/libwebm" ;BSD-3
+                           "third_party/libxml" ;X11
+                           "third_party/libyuv" ;BSD-3
+                           "third_party/lss" ;BSD-3
+                           "third_party/markupsafe" ;BSD-3
+                           "third_party/mesa_headers" ;X11
+                           "third_party/metrics_proto" ;BSD-3
+                           "third_party/modp_b64" ;BSD-3
+                           "third_party/node" ;Expat
                            (string-append "third_party/node/node_modules/"
-                                          "polymer-bundler/lib/third_party/UglifyJS2")
-                           "third_party/ots"
+                                          "polymer-bundler/lib/third_party/UglifyJS2") ;BSD-2
+                           "third_party/ots" ;BSD-3
                            ;; TODO: Build as extension.
-                           "third_party/pdfium"
-                           "third_party/pdfium/third_party/agg23"
-                           "third_party/pdfium/third_party/base"
-                           "third_party/pdfium/third_party/bigint"
-                           "third_party/pdfium/third_party/skia_shared"
+                           "third_party/pdfium" ;BSD-3
+                           "third_party/pdfium/third_party/agg23" ;Expat
+                           "third_party/pdfium/third_party/base" ;BSD-3
+                           "third_party/pdfium/third_party/bigint" ;Public domain
+                           "third_party/pdfium/third_party/skia_shared" ;BSD-3
                            (string-append "third_party/pdfium/third_party/freetype"
-                                          "/include/pstables.h")
-                           "third_party/perfetto"
-                           "third_party/ply"
-                           "third_party/polymer"
-                           "third_party/protobuf"
-                           "third_party/protobuf/third_party/six"
-                           "third_party/pyjson5"
-                           "third_party/qcms"
-                           "third_party/rnnoise"
-                           "third_party/sfntly"
-                           "third_party/skia"
-                           "third_party/skia/third_party/skcms"
-                           "third_party/skia/third_party/vulkan"
-                           "third_party/skia/third_party/vulkanmemoryallocator"
-                           "third_party/skia/third_party/gif"
-                           "third_party/smhasher"
-                           "third_party/speech-dispatcher"
-                           "third_party/sqlite"
-                           "third_party/swiftshader"
-                           "third_party/swiftshader/third_party/llvm-subzero"
-                           "third_party/swiftshader/third_party/subzero"
-                           "third_party/s2cellid"
-                           "third_party/usb_ids"
-                           "third_party/usrsctp"
-                           "third_party/WebKit"
-                           "third_party/web-animations-js"
-                           "third_party/webrtc"
-                           "third_party/webrtc/common_audio/third_party/fft4g" ;custom
-                           "third_party/webrtc/common_audio/third_party/spl_sqrt_floor" ;PD
-                           "third_party/webrtc/modules/third_party/fft" ;custom
-                           "third_party/webrtc/modules/third_party/g711" ;public domain
-                           "third_party/webrtc/modules/third_party/g722" ;public domain
-                           "third_party/webrtc/rtc_base/third_party/base64" ;custom
-                           "third_party/webrtc/rtc_base/third_party/sigslot" ;public domain
-                           "third_party/webrtc_overrides"
-                           "third_party/widevine/cdm/widevine_cdm_version.h"
-                           "third_party/widevine/cdm/widevine_cdm_common.h"
-                           "third_party/woff2"
-                           "third_party/xdg-utils"
-                           "third_party/yasm/run_yasm.py"
-                           "third_party/zlib/google"
-                           "url/third_party/mozilla"
-                           "v8/src/third_party/utf8-decoder"
-                           "v8/src/third_party/valgrind"
+                                          "/include/pstables.h") ;FreeType
+                           "third_party/perfetto" ;ASL2.0
+                           "third_party/ply" ;BSD-3
+                           "third_party/polymer" ;BSD-3
+                           "third_party/protobuf" ;BSD-3
+                           "third_party/protobuf/third_party/six" ;Expat
+                           "third_party/pyjson5" ;ASL2.0
+                           "third_party/qcms" ;Expat
+                           "third_party/rnnoise" ;BSD-3
+                           "third_party/sfntly" ;ASL2.0
+                           "third_party/skia" ;BSD-3
+                           "third_party/skia/third_party/skcms" ;BSD-3
+                           "third_party/skia/third_party/vulkan" ;BSD-3
+                           "third_party/skia/third_party/vulkanmemoryallocator" ;BSD-3
+                           "third_party/skia/third_party/gif" ;MPL1.1
+                           "third_party/smhasher" ;Expat
+                           "third_party/speech-dispatcher" ;GPL2+
+                           "third_party/sqlite" ;Public domain
+                           "third_party/swiftshader" ;ASL2.0
+                           "third_party/swiftshader/third_party/llvm-subzero" ;NCSA
+                           "third_party/swiftshader/third_party/subzero" ;NCSA
+                           "third_party/s2cellid" ;ASL2.0
+                           "third_party/usb_ids" ;BSD-3
+                           "third_party/usrsctp" ;BSD-2
+                           "third_party/WebKit" ;BSD-2 or BSD-3
+                           "third_party/web-animations-js" ;ASL2.0
+                           "third_party/webrtc" ;BSD-3
+                           "third_party/webrtc/common_audio/third_party/fft4g" ;Custom
+                           "third_party/webrtc/common_audio/third_party/spl_sqrt_floor" ;Public domain
+                           "third_party/webrtc/modules/third_party/fft" ;Custom
+                           "third_party/webrtc/modules/third_party/g711" ;Public domain
+                           "third_party/webrtc/modules/third_party/g722" ;Public domain
+                           "third_party/webrtc/rtc_base/third_party/base64" ;Custom
+                           "third_party/webrtc/rtc_base/third_party/sigslot" ;Public domain
+                           "third_party/webrtc_overrides" ;BSD-3
+                           "third_party/widevine/cdm/widevine_cdm_version.h" ;BSD-3
+                           "third_party/widevine/cdm/widevine_cdm_common.h" ;BSD-3
+                           "third_party/woff2" ;ASL2.0
+                           "third_party/xdg-utils" ;Expat
+                           "third_party/yasm/run_yasm.py" ;BSD-2 or BSD-3
+                           "third_party/zlib/google" ;BSD-3
+                           "url/third_party/mozilla" ;BSD-3, part MPL1.1
+                           "v8/src/third_party/utf8-decoder" ;Expat
+                           "v8/src/third_party/valgrind" ;BSD-4
                            "v8/third_party/v8/builtins" ;PSFL
-                           "v8/third_party/inspector_protocol"))))
+                           "v8/third_party/inspector_protocol")))) ;BSD-3
 
                     (define (empty? dir)
                       (equal? (scandir dir) '("." "..")))
@@ -912,6 +913,10 @@ order to protect the users privacy.")
                    license:bsd-2
                    license:expat
                    license:asl2.0
+                   license:mpl1.1
                    license:mpl2.0
                    license:public-domain
+                   license:isc
+                   (license:non-copyleft "chrome://credits"
+                                         "See chrome://credits for more information.")
                    license:lgpl2.1+))))

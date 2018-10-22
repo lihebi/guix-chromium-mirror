@@ -232,6 +232,21 @@
                  (base32
                   "0i4xbif70gasljsmxnsvw4dxx9hwf94kz3s12ki062n6c0b41mb7")))))))
 
+;; Chromium 70 requires HarfBuzz 1.8 or later (but not 2.0).  Remove once the
+;; Guix 'core-updates' branch has been merged.
+(define harfbuzz/chromium
+  (package
+    (inherit harfbuzz)
+    (version "1.9.0")
+    (source (origin
+              (method url-fetch)
+              (uri (string-append "https://www.freedesktop.org/software/"
+                                  "harfbuzz/release/harfbuzz-"
+                                  version ".tar.bz2"))
+              (sha256
+               (base32
+                "004b4j812wgfv8pmcypyrlwrjfa6149lwpz5df6rnm5cy0msdv0i"))))))
+
 (define-public gn
   (let ((commit "77d64a3da6bc7d8b0aab83ff7459b3280e6a84f2")
         (revision "1469"))          ;as returned by `git describe`, used below
@@ -871,7 +886,7 @@
        ("gdk-pixbuf" ,gdk-pixbuf)
        ("glib" ,glib)
        ("gtk+" ,gtk+)
-       ("harfbuzz" ,harfbuzz)
+       ("harfbuzz" ,harfbuzz/chromium)
        ("icu4c" ,icu4c)
        ("jsoncpp" ,jsoncpp)
        ("lcms" ,lcms)

@@ -247,63 +247,6 @@
                (base32
                 "004b4j812wgfv8pmcypyrlwrjfa6149lwpz5df6rnm5cy0msdv0i"))))))
 
-(define-public gn
-  (let ((commit "77d64a3da6bc7d8b0aab83ff7459b3280e6a84f2")
-        (revision "1469"))          ;as returned by `git describe`, used below
-    (package
-      (name "gn")
-      (version (git-version "0.0" revision commit))
-      (home-page "https://gn.googlesource.com/gn")
-      (source (origin
-                (method git-fetch)
-                (uri (git-reference (url home-page) (commit commit)))
-                (sha256
-                 (base32
-                  "0mgf2w4rz7y7fdx553wv3r3f49s4c5r8vykp0y6w75rrdyd2p7va"))
-                (file-name (git-file-name name version))))
-      (build-system gnu-build-system)
-      (arguments
-       `(#:tests? #f                    ;XXX tests aren't built
-         #:phases (modify-phases %standard-phases
-                    (add-before 'configure 'set-build-environment
-                      (lambda _
-                        (setenv "CC" "gcc") (setenv "CXX" "g++")
-                        (setenv "AR" "ar")
-                        #t))
-                    (replace 'configure
-                      (lambda _
-                        (invoke "python" "build/gen.py" "--no-sysroot"
-                                "--no-last-commit-position")))
-                    (add-after 'configure 'create-last-commit-position
-                      (lambda _
-                        ;; Create "last_commit_position.h" to avoid a dependency
-                        ;; on 'git' (and the checkout..).
-                        (call-with-output-file "out/last_commit_position.h"
-                          (lambda (port)
-                            (format port
-                                    "#define LAST_COMMIT_POSITION \"~a (~a)\"\n"
-                                    ,revision ,(string-take commit 8))
-                            #t))))
-                    (replace 'build
-                      (lambda _
-                        (invoke "ninja" "-C" "out" "gn"
-                                "-j" (number->string (parallel-job-count)))))
-                    (replace 'install
-                      (lambda* (#:key outputs #:allow-other-keys)
-                        (let ((out (assoc-ref outputs "out")))
-                          (install-file "out/gn" (string-append out "/bin"))
-                          #t))))))
-      (native-inputs
-       `(("ninja" ,ninja)
-         ("python" ,python-2)))
-      (synopsis "Generate Ninja build files")
-      (description
-       "GN is a tool that collects information about a project from
-@file{.gn} files and generates build files for the Ninja build system.")
-      ;; GN is distributed as BSD-3, but bundles a couple of files
-      ;; from ICU using the X11 license.
-      (license (list license:bsd-3 license:x11)))))
-
 (define-public chromium
   (package
     (name "chromium")

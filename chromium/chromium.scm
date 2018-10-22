@@ -478,7 +478,7 @@
                     (define (empty? dir)
                       (equal? (scandir dir) '("." "..")))
 
-                    (define (third_party? file)
+                    (define (third-party? file)
                       (if (string-contains file "third_party/")
                           #t
                           #f))
@@ -503,7 +503,7 @@
                       (let ((protected (make-regexp "\\.(gn|gyp)i?$")))
                         (match flag
                           ((or 'regular 'symlink 'stale-symlink)
-                           (when (third_party? child)
+                           (when (third-party? child)
                              (unless (or (member child preserved-club)
                                          (any (cute member <> preserved-club)
                                               (parents child))

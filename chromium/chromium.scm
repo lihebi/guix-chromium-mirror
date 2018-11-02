@@ -250,7 +250,7 @@
 (define-public chromium
   (package
     (name "chromium")
-    (version "70.0.3538.67")
+    (version "70.0.3538.77")
     (synopsis "Graphical web browser")
     (source (origin
               (method url-fetch)
@@ -259,7 +259,7 @@
                                   version ".tar.xz"))
               (sha256
                (base32
-                "0dqfwghl73gcmbnl9wb3i5wz8q65y1vhg7n0m2nh0hv33w1w4mp9"))
+                "0j84556r3m4igigqsx9zvw4kvbn4psfsi7m8xhcvfxc39ingh569"))
               (patches (append %debian-patches
                                %inox-patches
                                %ungoogled-patches

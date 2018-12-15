@@ -204,16 +204,16 @@
                "1x8sy7m9qw7z9f85af40czj4vwjx2vlc403gh2w04k03v6zd3wn4")))
 
 (define opus+custom
-  (package (inherit opus)
-           (name "opus+custom")
-           (arguments
-            (substitute-keyword-arguments (package-arguments opus)
-              ((#:configure-flags flags ''())
-               ;; Opus Custom is an optional extension of the Opus
-               ;; specification that allows for unsupported frame
-               ;; sizes.  Chromium requires that this is enabled.
-               `(cons "--enable-custom-modes"
-                      ,flags))))))
+  (package/inherit opus
+    (name "opus+custom")
+    (arguments
+     (substitute-keyword-arguments (package-arguments opus)
+       ((#:configure-flags flags ''())
+        ;; Opus Custom is an optional extension of the Opus
+        ;; specification that allows for unsupported frame
+        ;; sizes.  Chromium requires that this is enabled.
+        `(cons "--enable-custom-modes"
+               ,flags))))))
 
 (define libvpx/chromium
   ;; Chromium 66 and later requires an unreleased libvpx, so we take the
@@ -221,8 +221,7 @@
   (let ((version (package-version libvpx))
         (commit "e188b5435de71bcd602c378f1ac0441111f0f915")
         (revision "0"))
-    (package
-      (inherit libvpx)
+    (package/inherit libvpx
       (name "libvpx-chromium")
       (version (git-version version revision commit))
       (source (origin

@@ -235,6 +235,18 @@
                  (base32
                   "0v7lzvgy45zh7zwzmmzkvbcqmhs4xa97z0h97hd3j6myrxcfz1n9")))))))
 
+;; Transitional package until HarfBuzz 2.2 is available in Guix master branch.
+(define harfbuzz/chromium
+  (package/inherit harfbuzz
+    (version "2.2.0")
+    (source (origin
+              (inherit (package-source harfbuzz))
+              (uri (string-append "https://www.freedesktop.org/software/harfbuzz"
+                                  "/release/harfbuzz-" version ".tar.bz2"))
+              (sha256
+               (base32
+                "047q63jr513azf3g1y7f5xn60b4jdjs9zsmrx04sfw5rasyzrk5p"))))))
+
 (define-public chromium
   (package
     (name "chromium")
@@ -822,7 +834,7 @@
        ("gdk-pixbuf" ,gdk-pixbuf)
        ("glib" ,glib)
        ("gtk+" ,gtk+)
-       ("harfbuzz" ,harfbuzz)
+       ("harfbuzz" ,harfbuzz/chromium)
        ("icu4c" ,icu4c)
        ("jsoncpp" ,jsoncpp)
        ("lcms" ,lcms)

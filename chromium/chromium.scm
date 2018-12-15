@@ -118,64 +118,65 @@
     (uri (string-append "https://git.archlinux.org/svntogit/packages.git"
                         "/plain/trunk/" pathspec "?h=packages/chromium"
                         "&id=" revision))
-    (sha256
-     (base32
-      "1x8sy7m9qw7z9f85af40czj4vwjx2vlc403gh2w04k03v6zd3wn4"))
+    (sha256 (base32 hash))
     (file-name (chromium-patch-file-name pathspec))))
 
-(define %debian-revision "debian/70.0.3538.67-1")
-(define %ungoogled-revision "be93ead958dea4c7b03446c5935542019f0d2ae1")
+(define %debian-revision "debian/71.0.3578.80-1")
+(define %ungoogled-revision "e7414d0b603cffdcc16192201f7d8518aa3f30f0")
 (define %inox-revision %ungoogled-revision)
-(define %arch-revision "3a387aa30dbbe7bf3b5f00b1d1497d93d1b0c52a")
+(define %arch-revision "4ebe975d6900869d1c46ee0eb3e69a3a5df905cb")
 
 (define %debian-patches
   (list
-   ;; GCC does not support initializer list member assignment.
-   (debian-patch "fixes/member-assignment.patch" %debian-revision
-                 "0dqz2nlvdszpjb9bbz9vqkvzwar1hncdqksgkydvzwlpjvz8g1yx")
+   ;; Fix alignof() usage with GCC8; Chromium wants __alignof__.
+   (debian-patch "fixes/alignof.patch" %debian-revision
+                 "0dkddi7l9r1hjylypcndnrvjx296si5apc3n92kcl5l7mc5gfdfb")
    ;; Help GCC resolve some classes in a jumbo configuration.
    (debian-patch "fixes/namespace.patch" %debian-revision
-                 "1jf3cbkq1wdh3c8dwz7xlf661j73ma4k3cil71wsjfnqrjj8hr6h")
+                 "0bjxc672a7xxzdbnzvi8v231y84xhr2ww8a90lmhac01i1zx8r6v")
+   ;; GCC is unable to resolve some overloaded functions.
+   (debian-patch "fixes/ambiguous-overloads.patch" %debian-revision
+                 "1ag4ysh297g36gxrh0w08683vw4pm324m1802dq9g4lsn80srf5r")
    ;; Add constexpr on methods where it is required.
    (debian-patch "fixes/constexpr.patch" %debian-revision
-                 "0kw88wrcr7g69msdlr5k3jwwfq8pvdvr1p2nyxqpxn2kwhhwb5zf")
+                 "0z4ic5h7w4194y0c24h6iwbsm86hn42j71nyh1rgmd0jbpzkli9p")
    ;; Avoid dependency on NSPR when bootstrapping the build tools.
    (debian-patch "system/nspr.patch" %debian-revision
-                 "0n0hxmxnn033wlzijb9749dc6a4mvkhq5p7gvr4hcwh1in0k3hnn")
+                 "0xxl1c4hfp323id7y258gi1p244vk19c0dp4g2vkbl5vryd2w6fm")
    ;; Ditto for system libevent.
    (debian-patch "system/event.patch" %debian-revision
-                 "1m9wzcs49h0n78rn3lbqgdh1wh62bqsfp30kqd8rphx6lmbw2mar")
+                 "13zcx223s6lpnf6akxgqh30nlgcxd42csvz0fpsf17j0a5rdw19w")
+   ;; Don't depend on "third_party/jsoncpp".
+   (debian-patch "system/jsoncpp.patch" %debian-revision
+                 "0hvg8s9b8cnj1ld074dif42q3vhydcpjm6fcan1adxglzswsa3h5")
    ;; Make PDFium use system OpenJPEG.
    (debian-patch "system/openjpeg.patch" %debian-revision
-                 "185y9zssllfdib7qknnx1vgrj5iqjrqljpib49bazd5ssl3zn767")
+                 "142ndqpw8p3h4nm6q0fvircj7wzq3548fgy2yx81r9v0qbi2byls")
    ;; Make "Courgette" use system zlib instead of the bundled lzma.
    (debian-patch "system/zlib.patch" %debian-revision
-                 "1fmkiw7xrhwadvjxkzpv8j5iih2ws59l3llsdrpapw1vybfyq9nr")
+                 "142a464w6v0va67wg7klas1paf0g35andh1kidbcpw7vr5scs9b4")
    ;; Avoid dependency on Android tools.
    (debian-patch "disable/android.patch" %debian-revision
-                 "1drmy7izyl2lg7fjm9xnvnm17i7xn5269q95l433m1g6jmy7w6zh")
+                 "0ar4mfsmxfsd2x3am9rm28f1wzj6aqfq43n5r7xdhbj67yckaa06")
    ;; Do not show a warning about missing API keys.
    (debian-patch "disable/google-api-warning.patch" %debian-revision
-                 "0h311w19y7qnm1vg1jpdb4mqw6dwvl1i2yw9dm6xm0qkl76k5qwg")
+                 "0arkhfzzp2dxm199b0gi0yncwnf6b2fn8zzz9m67sghs7h4wj44w")
    ;; Don't override the home page set in master_preferences.
    (debian-patch "disable/welcome-page.patch" %debian-revision
-                 "0cj6g9yy02nd2s7wlyp1rdyy7ykg6zdkbzh8ralr7gpgbwzjb999")
-   ;; Fix alignof() usage with GCC8; upstream wants __alignof__.
-   (debian-patch "fixes/alignof.patch" %debian-revision
-                 "0dkddi7l9r1hjylypcndnrvjx296si5apc3n92kcl5l7mc5gfdfb")))
+                 "1d7rai8gnmfgp94s54ki41b6h32ig6dzw7z6b1qjhwhmd5hbv4qd")))
 
 (define %inox-patches
   (list
    ;; Fix build without the "safe browsing" feature.
    (inox-patch "0001-fix-building-without-safebrowsing.patch" %inox-revision
-               "0avkhb5fpk4zbbk1sjmsylqn7kccdznc5fh90svi3s8phxvy519g")
+               "0p4pfnlqzwxi25x7j2n0nzykdhin92jkz6794zzhm2xpqg0r4v0a")
    ;; Use sane defaults.  In particular, don't depend on any Google services.
    (inox-patch "0006-modify-default-prefs.patch" %inox-revision
-               "0vjljwfl0qlcdkvh4k18vaqpx14b6jnlfdkcdbskgn13cps1v6fq")
+               "0x5rixwaljlyxckr6zsjh4dmix1x86n34az79vs3v5ls3y7y005r")
    ;; Recent versions of Chromium may load a remote search engine on the "New
    ;; Tab Page", which causes unnecessary and involuntary network traffic.
    (inox-patch "0008-restore-classic-ntp.patch" %inox-revision
-               "1paghqp3viaq03618rhppf2xki1k2s1x3lh3h218yy3zvk34wshx")
+               "0m634f9603xjgsbkcyjjkr3l1ii2w9xmxq05wcahyn3dk1rnd6g5")
    ;; Add DuckDuckGo and use it as the default search engine.
    (inox-patch "0011-add-duckduckgo-search-engine.patch" %inox-revision
                "0mvw1ax0gw3d252c9b1pwbk0j7ny8z9nsfywcmhj56wm6yksgpkg")
@@ -190,13 +191,15 @@
   (list
    ;; Disable browser sign-in to prevent leaking data at launch.
    (ungoogled-patch "disable-signin.patch" %ungoogled-revision
-                    "0y32cqg23mxari0y20d4j3qmn903yxzw5swv9pjh9sjzilg1q5ld")
+                    "0rygxcf6hvhdgzy28rpfaryc3872rbvfcdqnp1cp1pjgrn7v4crw")
    ;; Don't report back to servers with information about errors.
    (ungoogled-patch "disable-domain-reliability.patch" %ungoogled-revision
-                    "1wsvxbbgyb8gsi7c7kxwk8s4kwkrp3rm66kjhbyylkis1p4pgmvc")))
+                    "1rjnvvnf6cmfgimfgqb34kglmifmwzfkf2rr5jkizp351lm6pjrk")))
 
 (define %arch-patches
   (list
+   (arch-patch "chromium-harfbuzz-r0.patch" %arch-revision
+               "0dh1z00w0cmsifjb905x0ws7z4ky0hbra7qbgkzar21yqi4hsdqv")
    (arch-patch "chromium-system-icu.patch" %arch-revision
                "1x8sy7m9qw7z9f85af40czj4vwjx2vlc403gh2w04k03v6zd3wn4")))
 
@@ -216,7 +219,7 @@
   ;; Chromium 66 and later requires an unreleased libvpx, so we take the
   ;; commit from "third_party/libvpx/README.chromium" in the tarball.
   (let ((version (package-version libvpx))
-        (commit "753fd86e86ac727dccac88376260b8f54502f2a3")
+        (commit "e188b5435de71bcd602c378f1ac0441111f0f915")
         (revision "0"))
     (package
       (inherit libvpx)
@@ -230,27 +233,12 @@
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0i4xbif70gasljsmxnsvw4dxx9hwf94kz3s12ki062n6c0b41mb7")))))))
-
-;; Chromium 70 requires HarfBuzz 1.8 or later (but not 2.0).  Remove once the
-;; Guix 'core-updates' branch has been merged.
-(define harfbuzz/chromium
-  (package
-    (inherit harfbuzz)
-    (version "1.9.0")
-    (source (origin
-              (method url-fetch)
-              (uri (string-append "https://www.freedesktop.org/software/"
-                                  "harfbuzz/release/harfbuzz-"
-                                  version ".tar.bz2"))
-              (sha256
-               (base32
-                "004b4j812wgfv8pmcypyrlwrjfa6149lwpz5df6rnm5cy0msdv0i"))))))
+                  "0v7lzvgy45zh7zwzmmzkvbcqmhs4xa97z0h97hd3j6myrxcfz1n9")))))))
 
 (define-public chromium
   (package
     (name "chromium")
-    (version "70.0.3538.110")
+    (version "71.0.3578.98")
     (synopsis "Graphical web browser")
     (source (origin
               (method url-fetch)
@@ -259,7 +247,7 @@
                                   version ".tar.xz"))
               (sha256
                (base32
-                "0bwlq5xii26b3yngwkwb7l2mx03c30ffpym4xg0hcci8ry7zhpj4"))
+                "0icxdg4fvz30jzq0xvl11zlwc9anb3lr9lb8sn1lqxr513isjmhw"))
               (patches (append %debian-patches
                                %inox-patches
                                %ungoogled-patches
@@ -403,6 +391,8 @@
                            "third_party/skia/third_party/gif" ;MPL1.1
                            "third_party/smhasher" ;Expat
                            "third_party/speech-dispatcher" ;GPL2+
+                           "third_party/spirv-headers" ;ASL2.0
+                           "third_party/SPIRV-Tools" ;ASL2.0
                            "third_party/sqlite" ;Public domain
                            "third_party/swiftshader" ;ASL2.0
                            "third_party/swiftshader/third_party/llvm-subzero" ;NCSA
@@ -663,6 +653,9 @@
                  "third_party/breakpad/breakpad/src/common/linux/libcurl_wrapper.h"
                (("include \"third_party/curl") "include \"curl"))
 
+             (substitute* "third_party/webrtc/rtc_base/strings/json.h"
+               (("#include \"third_party/jsoncpp/") "#include \"json/"))
+
              (substitute* "media/base/decode_capabilities.cc"
                (("third_party/libvpx/source/libvpx/") ""))
 
@@ -829,7 +822,7 @@
        ("gdk-pixbuf" ,gdk-pixbuf)
        ("glib" ,glib)
        ("gtk+" ,gtk+)
-       ("harfbuzz" ,harfbuzz/chromium)
+       ("harfbuzz" ,harfbuzz)
        ("icu4c" ,icu4c)
        ("jsoncpp" ,jsoncpp)
        ("lcms" ,lcms)

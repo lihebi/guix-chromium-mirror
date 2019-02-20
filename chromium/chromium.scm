@@ -216,25 +216,6 @@
         `(cons "--enable-custom-modes"
                ,flags))))))
 
-(define libvpx/chromium
-  ;; Chromium 66 and later requires an unreleased libvpx, so we take the
-  ;; commit from "third_party/libvpx/README.chromium" in the tarball.
-  (let ((version (package-version libvpx))
-        (commit "e188b5435de71bcd602c378f1ac0441111f0f915")
-        (revision "0"))
-    (package/inherit libvpx
-      (name "libvpx-chromium")
-      (version (git-version version revision commit))
-      (source (origin
-                (method git-fetch)
-                (uri (git-reference
-                      (url "https://chromium.googlesource.com/webm/libvpx")
-                      (commit commit)))
-                (file-name (git-file-name name version))
-                (sha256
-                 (base32
-                  "0v7lzvgy45zh7zwzmmzkvbcqmhs4xa97z0h97hd3j6myrxcfz1n9")))))))
-
 ;; Transitional package until HarfBuzz 2.2 is available in Guix master branch.
 (define harfbuzz/chromium
   (package/inherit harfbuzz
@@ -843,7 +824,7 @@
        ("libjpeg-turbo" ,libjpeg-turbo)
        ("libpng" ,libpng)
        ;;("libsrtp" ,libsrtp)
-       ("libvpx" ,libvpx/chromium)
+       ("libvpx" ,libvpx)
        ("libwebp" ,libwebp)
        ("libx11" ,libx11)
        ("libxcb" ,libxcb)
